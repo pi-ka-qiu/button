@@ -45,6 +45,7 @@ function Ripple(obj) {
     this.createRippleNode = function(tagName = 'span') {
         let span = document.createElement(tagName)
         addClass(span, 'md-ripple')
+
         span.style.width = 2 * Circular.prototype.r + 'px';
         span.style.height = 2 * Circular.prototype.r + 'px';
         return span
