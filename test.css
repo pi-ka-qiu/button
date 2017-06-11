@@ -1,21 +1,37 @@
-.animate {
-        animation: ripple 1s linear;
-        background-color: #eee;
-        border-radius: 50%;
+@keyframes ripple {
+    0% {
+        opacity: 1;
     }
+    99% {
+        opacity: 0;
+        transform: scale(5);
+    }
+    100% {
+        opacity: 0;
+        background-color: transparent;
+    }
+}
 
-    @keyframes ripple {
-        100% {
-            opacity: 0;
-            transform: scale(3);
-        }
-    }
-    
-    .md-ripple {
-        position: absolute;
-        left: 0;
-        top: 0;
-        display: inline-block;
-        height: 20px;
-        width: 20px;
-    }
+
+/*决定水波纹的颜色*/
+
+.animate {
+    animation: ripple 1s linear;
+    animation-fill-mode: forwards;
+    border-radius: 50%;
+    background-color: #eee;
+}
+
+
+/*决定水波纹的位置*/
+
+.md-ripple {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    opacity: 1;
+    border-radius: 50%;
+}

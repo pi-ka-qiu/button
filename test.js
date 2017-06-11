@@ -1,4 +1,3 @@
-
 /**
  * 接收参数
  * color： ‘#fff’
@@ -9,22 +8,23 @@ Circular.prototype = {
     r: 5,
     cName: 'md-button',
     color: '#fff',
-    time: 1000 
+    time: 1000
 }
+
 function Circular() {
     this.x = 0;
     this.y = 0;
-    this.setX = function (newValue) {
+    this.setX = function(newValue) {
         this.x = newValue;
     };
-    this.setY = function (newValue) {
+    this.setY = function(newValue) {
         this.y = newValue
     }
 }
 
-function Ripple (obj){
-    this.init = function (obj) {
-        if(!isEmptyObject(obj)){
+function Ripple(obj) {
+    this.init = function(obj) {
+        if (!isEmptyObject(obj)) {
             Circular.prototype.r = obj.r || Circular.prototype.r
             Circular.prototype.cName = obj.cName || Circular.prototype.cName
             Circular.prototype.color = obj.color || Circular.prototype.color
@@ -32,26 +32,24 @@ function Ripple (obj){
         }
     };
     //为所有按钮添加监听，添加span
-    this.ButtonAddClickEvent = function () {
+    this.ButtonAddClickEvent = function() {
         //创建button下的 span
-        
         let buttonList = document.getElementsByClassName(Circular.prototype.cName);
         for (let i = 0; i < buttonList.length; i++) {
             let circular = new Circular()
             let span = this.createRippleNode()
             buttonList[i].appendChild(span)
-            console.log(span)
-            buttonList[i].addEventListener('click',(event)=>{this.reppleClick(event,buttonList[i],circular,span)})
+            buttonList[i].addEventListener('click', (event) => { this.reppleClick(event, buttonList[i], circular, span) })
         }
     };
-    this.createRippleNode = function (tagName = 'span') {
-        //let docFrag = document.createDocumentFragment();
+    this.createRippleNode = function(tagName = 'span') {
         let span = document.createElement(tagName)
-        addClass(span,'md-ripple')
-        //docFrag.appendChild(span);
+        addClass(span, 'md-ripple')
+        span.style.width = 2 * Circular.prototype.r + 'px';
+        span.style.height = 2 * Circular.prototype.r + 'px';
         return span
     };
-    this.reppleClick = function   (event,button,circular,ripple) {
+    this.reppleClick = function(event, button, circular, ripple) {
         /*相对于 按钮的点击坐标
         点击的位置 - 获取按钮的位置 
         */
@@ -68,22 +66,27 @@ function Ripple (obj){
         ripple.style.left = circular.x + 'px';
         ripple.style.top = circular.y + 'px';
         addClass(ripple, 'animate')
-        window.setTimeout(function () { removeClass(ripple, 'animate') }, 1000)
+        window.setTimeout(function() { removeClass(ripple, 'animate') }, circular.time)
     }
+    this.init(obj)
+    this.ButtonAddClickEvent()
 }
 
 
 function isEmptyObject(obj) {
-    for (let i in obj) {return false}
+    for (let i in obj) { return false }
     return true
 }
 
 function hasClass(ele, className) {
     return ele.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
 }
+
 function addClass(ele, className) {
     if (!this.hasClass(ele, className)) { ele.className += " " + className; }
+    console.log('--addClass--')
 }
+
 function removeClass(ele, className) {
     if (hasClass(ele, className)) {
         var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
@@ -91,6 +94,9 @@ function removeClass(ele, className) {
     }
 }
 //取得所有按钮
-let test = new Ripple()
-test.init()
-test.ButtonAddClickEvent()
+let test = new Ripple({
+    r: 20,
+    cName: 'md-button',
+    color: '#fff',
+    time: 1000
+})
