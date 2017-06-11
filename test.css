@@ -16,7 +16,7 @@
 /*决定水波纹的颜色*/
 
 .animate {
-    animation: ripple 1s linear;
+    animation: ripple 0.65s linear;
     animation-fill-mode: forwards;
     border-radius: 50%;
     background-color: #eee;

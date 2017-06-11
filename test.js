@@ -38,6 +38,8 @@ function Ripple(obj) {
         for (let i = 0; i < buttonList.length; i++) {
             let circular = new Circular()
             let span = this.createRippleNode()
+                //将所有按钮设置为相对定位
+                //let t = buttonList[i].style.position = 'relative'
             buttonList[i].appendChild(span)
             buttonList[i].addEventListener('click', (event) => { this.reppleClick(event, buttonList[i], circular, span) })
         }
@@ -45,9 +47,11 @@ function Ripple(obj) {
     this.createRippleNode = function(tagName = 'span') {
         let span = document.createElement(tagName)
         addClass(span, 'md-ripple')
-
         span.style.width = 2 * Circular.prototype.r + 'px';
         span.style.height = 2 * Circular.prototype.r + 'px';
+        span.addEventListener('animationend', function(event) {
+            removeClass(this, 'animate')
+        })
         return span
     };
     this.reppleClick = function(event, button, circular, ripple) {
@@ -91,7 +95,7 @@ function addClass(ele, className) {
 function removeClass(ele, className) {
     if (hasClass(ele, className)) {
         var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
-        ele.className = ele.className.replace(reg, ' ');
+        ele.className = ele.className.replace(reg, '');
     }
 }
 //取得所有按钮
