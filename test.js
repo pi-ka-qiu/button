@@ -22,8 +22,12 @@ function Circular() {
     }
 }
 
-function Ripple(obj) {
-    this.init = function(obj) {
+class Ripple {
+    constructor(obj) {
+        this.init(obj);
+        this.buttonAddClickEvent();
+    }
+    init(obj) {
         if (!isEmptyObject(obj)) {
             Circular.prototype.r = obj.r || Circular.prototype.r
             Circular.prototype.cName = obj.cName || Circular.prototype.cName
@@ -32,7 +36,7 @@ function Ripple(obj) {
         }
     };
     //为所有按钮添加监听，添加span
-    this.ButtonAddClickEvent = function() {
+    buttonAddClickEvent() {
         //创建button下的 span
         let buttonList = document.getElementsByClassName(Circular.prototype.cName);
         for (let i = 0; i < buttonList.length; i++) {
@@ -44,7 +48,7 @@ function Ripple(obj) {
             buttonList[i].addEventListener('click', (event) => { this.reppleClick(event, buttonList[i], circular, span) })
         }
     };
-    this.createRippleNode = function(tagName = 'span') {
+    createRippleNode(tagName = 'span') {
         let span = document.createElement(tagName)
         addClass(span, 'md-ripple')
         span.style.width = 2 * Circular.prototype.r + 'px';
@@ -54,7 +58,7 @@ function Ripple(obj) {
         })
         return span
     };
-    this.reppleClick = function(event, button, circular, ripple) {
+    reppleClick(event, button, circular, ripple) {
         /*相对于 按钮的点击坐标
         点击的位置 - 获取按钮的位置 
         */
@@ -73,8 +77,6 @@ function Ripple(obj) {
         addClass(ripple, 'animate')
         window.setTimeout(function() { removeClass(ripple, 'animate') }, circular.time)
     }
-    this.init(obj)
-    this.ButtonAddClickEvent()
 }
 
 
