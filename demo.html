@@ -4,7 +4,7 @@
 <head>
     <title>水波纹按钮</title>
 </head>
-<link href="./test.css" rel="stylesheet">
+<link href="./ripple.css" rel="stylesheet">
 <style>
     body {
         padding: 0;
@@ -33,15 +33,17 @@
     <button class="md-button22">文字</button>
 </body>
 
-<script src="./test.js"></script>
+<script src="./ripple.js"></script>
 <script>
-    //取得所有按钮
-    let test2 = new Ripple({
+    new Ripple({
         cName: 'md-button22'
     })
-    let test = new Ripple({
+    new Ripple({
+        cName: 'md-button',
         r: 10,
-        color: 'red'
+        color: 'red',
+        time: '0.5s',
+        MaxNum: 5
     })
 </script>
 

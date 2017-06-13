@@ -37,7 +37,9 @@ Circular.prototype = {
     cName: 'md-button',
     color: 'rgba(0, 0, 0, 0.3)',
     time: '0.5s',
-    MaxNum: 5
+    MaxNum: 5,
+    animationCName: 'ripple-animate',
+    wrapperCName: 'md-wrapper'
 }
 
 function Circular() {
@@ -94,10 +96,10 @@ class Ripple {
     createRippleWrapper(circular) {
         //在button下创建一个div作为wrapper，默认有一个span.
         let div = document.createElement('div')
-        ripple_utill.addClass(div, 'md-wrapper')
+        ripple_utill.addClass(div, this.CIRCULAR.wrapperCName)
         let span = circular.createRipple('span')
-        span.addEventListener('animationend', function(event) {
-            ripple_utill.removeClass(this, 'animate')
+        span.addEventListener('animationend', (event) => {
+            ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
         })
         div.appendChild(span);
         return div;
@@ -106,7 +108,7 @@ class Ripple {
         //创建wrapper子节点span时，判断wrapper下是否有span空闲(动画停止)，空闲则重用，所有都没有则新建span。
         let childrenList = wrapper.children;
         for (let i = 0; i < childrenList.length; i++) {
-            let flag = ripple_utill.hasClass(childrenList[i], 'animate')
+            let flag = ripple_utill.hasClass(childrenList[i], this.CIRCULAR.animationCName)
             if (flag == null) { //动画已经停止了
                 ripple_utill.addClass(childrenList[i], 'md-ripple')
                 return childrenList[i];
@@ -137,6 +139,6 @@ class Ripple {
 
         ripple.style.left = circular.x + 'px';
         ripple.style.top = circular.y + 'px';
-        ripple_utill.addClass(ripple, 'animate')
+        ripple_utill.addClass(ripple, this.CIRCULAR.animationCName)
     }
 }

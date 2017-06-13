@@ -15,7 +15,7 @@
 
 /*决定水波纹的动画*/
 
-.animate {
+.ripple-animate {
     animation: ripple 0.65s linear;
     animation-fill-mode: forwards;
     border-radius: 50%;
