@@ -11,6 +11,14 @@
         margin: 0;
     }
     
+    .demo-div {
+        display: block;
+        position: relative;
+        width: 50%;
+        height: 200px;
+        border: 1px solid #000;
+    }
+    
     button {
         margin: 100px 100px;
         position: relative;
@@ -28,21 +36,25 @@
 </style>
 
 <body>
+    <div class="md-div demo-div"></div>
     <button class="md-button">文字</button>
-    <button class="md-button">文字</button>
-    <button class="md-button22">文字</button>
+
 </body>
 
 <script src="./ripple.js"></script>
 <script>
     new Ripple({
-        cName: 'md-button22'
+        cName: 'md-div',
+        r: 20,
+        time: '0.35s',
+        color: 'rgba(0,0,0,0.1)',
+        MaxNum: 2
     })
     new Ripple({
         cName: 'md-button',
         r: 10,
         color: 'red',
-        time: '0.5s',
+        time: '0.3s',
         MaxNum: 5
     })
 </script>
