@@ -3,7 +3,7 @@
         opacity: 1;
     }
     99% {
-        opacity: 0;
+        opacity: 1;
         transform: scale(5);
     }
     100% {
@@ -19,11 +19,20 @@
     animation: ripple 0.65s linear;
     animation-fill-mode: forwards;
     border-radius: 50%;
-    background-color: #eee;
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 
 /*决定水波纹的位置*/
+
+.md-wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 .md-ripple {
     position: absolute;
