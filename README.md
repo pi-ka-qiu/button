@@ -16,3 +16,11 @@ new Ripple({
         time: '0.5s',
         MaxNum: 5
     })
+
+# Options
+
+| Option | Description |
+| ----- | ----- |
+| speed | Number(default: 300) speed of animation. |
+| auto | Number(default: 3000) delay of auto slide. |
+| continuous | Boolean (default:true) - creates an infinite slider without endpoints |
