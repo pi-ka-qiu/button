@@ -23,20 +23,26 @@
     }
     
     button:hover {
-        /*background-color: rgba(0, 0, 0, 0.1)*/
+        background-color: rgba(0, 0, 0, 0.1)
     }
 </style>
 
 <body>
     <button class="md-button">文字</button>
     <button class="md-button">文字</button>
-    <button class="md-button">文字</button>
+    <button class="md-button22">文字</button>
 </body>
 
 <script src="./test.js"></script>
 <script>
     //取得所有按钮
-    let test = new Ripple({})
+    let test2 = new Ripple({
+        cName: 'md-button22'
+    })
+    let test = new Ripple({
+        r: 10,
+        color: 'red'
+    })
 </script>
 
 </html>

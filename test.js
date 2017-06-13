@@ -66,26 +66,27 @@ class Ripple {
         this.buttonAddClickEvent();
     }
     init(obj) {
+        this.CIRCULAR = new Circular()
         if (!ripple_utill.isEmptyObject(obj)) {
-            Circular.prototype.r = obj.r || Circular.prototype.r
-            Circular.prototype.cName = obj.cName || Circular.prototype.cName
-            Circular.prototype.color = obj.color || Circular.prototype.color
-            Circular.prototype.time = obj.time || Circular.prototype.time
-            Circular.prototype.MaxNum = obj.MaxNum || Circular.prototype.MaxNum
+            this.CIRCULAR.r = obj.r || this.CIRCULAR.r
+            this.CIRCULAR.cName = obj.cName || this.CIRCULAR.cName
+            this.CIRCULAR.color = obj.color || this.CIRCULAR.color
+            this.CIRCULAR.time = obj.time || this.CIRCULAR.time
+            this.CIRCULAR.MaxNum = obj.MaxNum || this.CIRCULAR.MaxNum
         }
     };
     //为所有按钮添加监听，添加span
     buttonAddClickEvent() {
         //创建button下的 span
-        let buttonList = document.getElementsByClassName(Circular.prototype.cName);
+        let buttonList = document.getElementsByClassName(this.CIRCULAR.cName);
         for (let i = 0; i < buttonList.length; i++) {
-            let circular = new Circular()
-                //将所有按钮设置为相对定位
-                //let t = buttonList[i].style.position = 'relative'
-            let wrapper = this.createRippleWrapper(circular)
+            //let circular = new Circular()
+            //将所有按钮设置为相对定位
+            //let t = buttonList[i].style.position = 'relative'
+            let wrapper = this.createRippleWrapper(this.CIRCULAR)
             buttonList[i].appendChild(wrapper)
             buttonList[i].addEventListener('click', (event) => {
-                this.reppleClick(event, buttonList[i], circular, this.createRippleChildNode(circular, wrapper));
+                this.reppleClick(event, buttonList[i], this.CIRCULAR, this.createRippleChildNode(wrapper));
             })
 
         }
@@ -101,7 +102,7 @@ class Ripple {
         div.appendChild(span);
         return div;
     };
-    createRippleChildNode(circular, wrapper) {
+    createRippleChildNode(wrapper) {
         //创建wrapper子节点span时，判断wrapper下是否有span空闲(动画停止)，空闲则重用，所有都没有则新建span。
         let childrenList = wrapper.children;
         for (let i = 0; i < childrenList.length; i++) {
@@ -109,8 +110,8 @@ class Ripple {
             if (flag == null) { //动画已经停止了
                 ripple_utill.addClass(childrenList[i], 'md-ripple')
                 return childrenList[i];
-            } else if (flag != null && i === childrenList.length - 1 && circular.MaxNum >= childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
-                let span = circular.createRipple('span');
+            } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum >= childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
+                let span = this.CIRCULAR.createRipple('span');
                 span.addEventListener('animationend', function(event) {
                     //新建的span在动画结束后，从wrapper中移除
                     wrapper.removeChild(this)
@@ -127,8 +128,7 @@ class Ripple {
         */
         let relativeX = event.clientX - button.offsetLeft;
         let relativeY = event.clientY - button.offsetTop;
-        //圆变大后的半径 获取按钮的宽度、高度
-        //circular.r = button.clientHeight > button.clientWidth? button.clientHeight: button.clientWidth;
+
         let positionX = relativeX - circular.r;
         let positionY = relativeY - circular.r;
 
