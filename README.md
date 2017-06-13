@@ -4,10 +4,15 @@
 ## Import using script tag
 
 ``` HTML
-<link rel="stylesheet" href="../node-modules/vue-swipe/dist/vue-swipe.css" charset="utf-8">
-<script src="../node-modules/vue-swipe/dist/vue-swipe.js"></script>
+<link rel="stylesheet" href="./ripple.css" charset="utf-8">
+<script src="./ripple.js"></script>
 ```
 
 ```JavaScript
-const vueSwipe = VueSwipe.Swipe;
-const vueSwipeItem = VueSwipe.SwipeItem;
+new Ripple({
+        cName: 'md-button',
+        r: 10,
+        color: 'red',
+        time: '0.5s',
+        MaxNum: 5
+    })
