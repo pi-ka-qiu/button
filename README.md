@@ -35,5 +35,5 @@ new Ripple({
     })
 ```
 # Demo
-[demo](https://github.com/Ge-Ge/button/blob/master/demo.html) 
-[jsFiddle](https://jsfiddle.net/LUPIN34/4ym52yvu/)
+## [demo](https://github.com/Ge-Ge/button/blob/master/demo.html) 
+## [jsFiddle](https://jsfiddle.net/LUPIN34/4ym52yvu/)
