@@ -137,7 +137,7 @@ class Ripple {
             if (flag == null) { //动画已经停止了
                 ripple_utill.addClass(childrenList[i], 'md-ripple')
                 return childrenList[i];
-            } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum >= childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
+            } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum > childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
                 let span = this.CIRCULAR.createRipple('span');
                 span.addEventListener('animationend', (event) => {
                     //新建的span在动画结束后，如果全部span空闲，则自身从wrapper中移除
