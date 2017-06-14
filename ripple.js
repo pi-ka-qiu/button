@@ -27,10 +27,11 @@ var ripple_utill = {
      * 接收参数
      * cName: 'md-button' 
      * color： ‘#fff’
-     * r： 5
+     * r： 12 r默认是自动计算，有传入时使用自定义值;
      * time： 1000 
      * rippleMultiple: true  是否出现多个水波纹
      * MaxNum：3 最多出现多少个水波纹
+     * center: true 水波纹出现的位置
      */
 Circular.prototype = {
     r: 20,
@@ -39,7 +40,8 @@ Circular.prototype = {
     time: '0.5s',
     MaxNum: 5,
     animationCName: 'ripple-animate',
-    wrapperCName: 'md-wrapper'
+    wrapperCName: 'md-wrapper',
+    center: false
 }
 
 function Circular() {
@@ -64,14 +66,18 @@ function Circular() {
 
 class Ripple {
     constructor(obj) {
+        this.CIRCULAR = new Circular();
+        this.buttonList = null;
         this.init(obj);
         this.buttonAddClickEvent();
     }
     init(obj) {
-        this.CIRCULAR = new Circular()
+
         if (!ripple_utill.isEmptyObject(obj)) {
-            this.CIRCULAR.r = obj.r || this.CIRCULAR.r
+
             this.CIRCULAR.cName = obj.cName || this.CIRCULAR.cName
+            this.CIRCULAR.center = obj.center || this.CIRCULAR.center
+            this.CIRCULAR.r = obj.r || this.computedR()
             this.CIRCULAR.color = obj.color || this.CIRCULAR.color
             this.CIRCULAR.time = obj.time || this.CIRCULAR.time
             this.CIRCULAR.MaxNum = obj.MaxNum || this.CIRCULAR.MaxNum
@@ -80,15 +86,15 @@ class Ripple {
     //为所有按钮添加监听，添加span
     buttonAddClickEvent() {
         //创建button下的 span
-        let buttonList = document.getElementsByClassName(this.CIRCULAR.cName);
-        for (let i = 0; i < buttonList.length; i++) {
+        this.buttonList = document.getElementsByClassName(this.CIRCULAR.cName);
+        for (let i = 0; i < this.buttonList.length; i++) {
             //let circular = new Circular()
             //将所有按钮设置为相对定位
-            //let t = buttonList[i].style.position = 'relative'
+            this.buttonList[i].style.position = 'relative'
             let wrapper = this.createRippleWrapper(this.CIRCULAR)
-            buttonList[i].appendChild(wrapper)
-            buttonList[i].addEventListener('click', (event) => {
-                this.reppleClick(event, buttonList[i], this.CIRCULAR, this.createRippleChildNode(wrapper));
+            this.buttonList[i].appendChild(wrapper)
+            this.buttonList[i].addEventListener('click', (event) => {
+                this.reppleClick(event, this.buttonList[i], this.CIRCULAR, this.createRippleChildNode(wrapper));
             })
 
         }
@@ -117,6 +123,7 @@ class Ripple {
                 span.addEventListener('animationend', function(event) {
                     //新建的span在动画结束后，从wrapper中移除
                     wrapper.removeChild(this)
+                    console.log(event)
                 })
                 wrapper.appendChild(span);
                 return span;
@@ -124,21 +131,58 @@ class Ripple {
         }
         return childrenList[0];
     };
+    /**
+     * 鼠标点击时，设置span的位置
+     * @param {} event 
+     * @param {Button} button 
+     * @param {Circular} circular 
+     * @param {Element} ripple 
+     */
     reppleClick(event, button, circular, ripple) {
-        /*相对于 按钮的点击坐标
-        点击的位置 - 获取按钮的位置 
-        */
-        let relativeX = event.clientX - button.offsetLeft;
-        let relativeY = event.clientY - button.offsetTop;
-
-        let positionX = relativeX - circular.r;
-        let positionY = relativeY - circular.r;
-
-        circular.setX(positionX);
-        circular.setY(positionY);
-
-        ripple.style.left = circular.x + 'px';
-        ripple.style.top = circular.y + 'px';
+        this.computedCircleCenter(event, button);
+        //当span与原来的位置相同时，不改变位置
+        if (circular.x + 'px' != ripple.style.left && ripple.style.top != circular.y + 'px') {
+            ripple.style.left = circular.x + 'px';
+            ripple.style.top = circular.y + 'px';
+        } else {
+            console.log('点击位置相同')
+        }
         ripple_utill.addClass(ripple, this.CIRCULAR.animationCName)
+    };
+    /**
+     * 计算并设置圆心的位置
+     * @param {Event} event 
+     * @param {Button} button 
+     */
+    computedCircleCenter(event, button) {
+        let positionX = 0
+        let positionY = 0;
+        if (this.CIRCULAR.center) {
+            /**按钮的中心位置  x= width/2  y= height/2 **/
+            let relativeX = button.offsetWidth / 2;
+            let relativeY = button.offsetHeight / 2;
+            positionX = relativeX - this.CIRCULAR.r;
+            positionY = relativeY - this.CIRCULAR.r;
+        } else {
+            /**点击的坐标相对与按钮的位置 = 点击的位置 - 获取按钮的位置 
+             * x = 按钮x轴位置 - R
+             */
+            let relativeX = event.clientX - button.offsetLeft;
+            let relativeY = event.clientY - button.offsetTop;
+            positionX = relativeX - this.CIRCULAR.r;
+            positionY = relativeY - this.CIRCULAR.r;
+        }
+        //对数字取整
+        this.CIRCULAR.setX(parseInt(positionX));
+        this.CIRCULAR.setY(parseInt(positionY));
+    };
+    //计算半径
+    computedR() {
+        let button = document.getElementsByClassName(this.CIRCULAR.cName)[0];
+        let MaxR = button.clientHeight > button.clientWidth ? button.clientHeight : button.clientWidth;
+        if (this.CIRCULAR.center) {
+            return MaxR / 5 / 2
+        }
+        return MaxR / 5;
     }
 }

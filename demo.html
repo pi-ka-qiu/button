@@ -3,6 +3,7 @@
 
 <head>
     <title>水波纹按钮</title>
+    <meta charset="utf-8">
 </head>
 <link href="./ripple.css" rel="stylesheet">
 <style>
@@ -14,19 +15,32 @@
     .demo-div {
         display: block;
         position: relative;
+        margin: 0 auto;
         width: 50%;
-        height: 200px;
+        height: 100px;
         border: 1px solid #000;
+        overflow: hidden;
     }
     
     button {
-        margin: 100px 100px;
+        margin: 10px 10px;
         position: relative;
         background: white;
         border: 1px solid #eee;
         width: 80px;
         height: 40px;
         padding: 0;
+        overflow: hidden;
+    }
+    
+    .yuan {
+        display: block;
+        position: relative;
+        width: 30px;
+        height: 30px;
+        margin: 10px 10px;
+        border-radius: 50%;
+        background-color: blueviolet;
         overflow: hidden;
     }
     
@@ -38,24 +52,31 @@
 <body>
     <div class="md-div demo-div"></div>
     <button class="md-button">文字</button>
-
+    <div class="md-yuan yuan"></div>
 </body>
 
 <script src="./ripple.js"></script>
 <script>
     new Ripple({
         cName: 'md-div',
-        r: 20,
+        /* r: 20,*/
         time: '0.35s',
         color: 'rgba(0,0,0,0.1)',
         MaxNum: 2
     })
     new Ripple({
         cName: 'md-button',
-        r: 10,
-        color: 'red',
-        time: '0.3s',
+        r: 16,
+        color: 'rgba(0,0,0,0.1)',
+        time: '0.25s',
         MaxNum: 5
+    })
+    new Ripple({
+        cName: 'md-yuan',
+        color: 'rgba(0,0,0,0.1)',
+        time: '0.25s',
+        MaxNum: 3,
+        center: true
     })
 </script>
 
