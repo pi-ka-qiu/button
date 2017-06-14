@@ -19,6 +19,19 @@ var ripple_utill = {
                 ele.className = ele.className.replace(reg, '');
             }
         },
+        /**
+         * @param {Element} ele
+         * @param {Int} noRM 不需要删除的子元素 index
+         */
+        removeAllChild: function(ele, noRM) {
+            let childrenList = ele.children;
+            for (let i = 0; i < childrenList.length; i++) {
+                if (noRM != null && noRM === i) {
+                    continue;
+                }
+                ele.removeChild(childrenList[i])
+            }
+        },
         browserSupportEvent: function(eventName) {
             return eventName in window;
         }
@@ -41,7 +54,8 @@ Circular.prototype = {
     MaxNum: 5,
     animationCName: 'ripple-animate',
     wrapperCName: 'md-wrapper',
-    center: false
+    center: false,
+    zIndex: null,
 }
 
 function Circular() {
@@ -81,6 +95,7 @@ class Ripple {
             this.CIRCULAR.color = obj.color || this.CIRCULAR.color
             this.CIRCULAR.time = obj.time || this.CIRCULAR.time
             this.CIRCULAR.MaxNum = obj.MaxNum || this.CIRCULAR.MaxNum
+            this.CIRCULAR.zIndex = obj.zIndex || this.CIRCULAR.zIndex
         }
     };
     //为所有按钮添加监听，添加span
@@ -102,10 +117,14 @@ class Ripple {
     createRippleWrapper(circular) {
         //在button下创建一个div作为wrapper，默认有一个span.
         let div = document.createElement('div')
+        if (circular.zIndex != null) {
+            div.style.zIndex = circular.zIndex;
+        }
         ripple_utill.addClass(div, this.CIRCULAR.wrapperCName)
         let span = circular.createRipple('span')
         span.addEventListener('animationend', (event) => {
             ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
+            ripple_utill.removeAllChild(div, 0);
         })
         div.appendChild(span);
         return div;
@@ -120,9 +139,14 @@ class Ripple {
                 return childrenList[i];
             } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum >= childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
                 let span = this.CIRCULAR.createRipple('span');
-                span.addEventListener('animationend', function(event) {
-                    //新建的span在动画结束后，从wrapper中移除
-                    wrapper.removeChild(this)
+                span.addEventListener('animationend', (event) => {
+                    //新建的span在动画结束后，如果全部span空闲，则自身从wrapper中移除
+                    ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
+                        //wrapper.removeChild(span)
+                    let count = this.freeElementCount(wrapper);
+                    if (count === childrenList.length) {
+                        ripple_utill.removeAllChild(wrapper, 0);
+                    }
                     console.log(event)
                 })
                 wrapper.appendChild(span);
@@ -130,6 +154,21 @@ class Ripple {
             }
         }
         return childrenList[0];
+    };
+    /**
+     * 
+     * @param {Element} wrapper 
+     */
+    freeElementCount(wrapper) {
+        let count = 0;
+        let childrenList = wrapper.children;
+        for (let i = 0; i < childrenList.length; i++) {
+            let flag = ripple_utill.hasClass(childrenList[i], this.CIRCULAR.animationCName)
+            if (flag == null) { //动画已经停止了
+                count++;
+            }
+        }
+        return count;
     };
     /**
      * 鼠标点击时，设置span的位置
@@ -181,8 +220,8 @@ class Ripple {
         let button = document.getElementsByClassName(this.CIRCULAR.cName)[0];
         let MaxR = button.clientHeight > button.clientWidth ? button.clientHeight : button.clientWidth;
         if (this.CIRCULAR.center) {
-            return MaxR / 5 / 2
+            return Math.ceil(MaxR / 5 / 2)
         }
-        return MaxR / 5;
+        return Math.ceil(MaxR / 5);
     }
 }
