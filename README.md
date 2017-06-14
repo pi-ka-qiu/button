@@ -1,5 +1,5 @@
 # Overview
-使用JavaScript制作 水波纹 特效。
+使用JavaScript制作 水波纹 特效。使用了animation 所以需要至少ie10。
 
 ## Import using script tag
 
