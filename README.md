@@ -1,5 +1,5 @@
 # Overview
-使用JavaScript制作 水波纹 特效。
+使用JavaScript制作 水波纹 特效。使用了animation 所以需要至少ie10。
 
 ## Import using script tag
 
@@ -15,10 +15,12 @@
 | Option | Description |
 | ----- | ----- |
 | cName | element的className，默认为 "md-button" |
-| r | 水波纹最小半径 默认为:20|
+| r | 水波纹最小半径，不传此参数则为自动计算|
 | color | 水波纹颜色 默认为：rgba(0, 0, 0, 0.3)|
 | time | animation的时间 默认为：0.5s|
 | MaxNum | 水波纹的最大数量 默认为：5|
+| center |  水波纹的圆心。默认为：false|
+| zIndex | 设置z-index 默认为：null,当水波纹被覆盖时，可以使用此参数|
 
 # Usage
 ```HTML
@@ -27,11 +29,11 @@
 ```JavaScript
 new Ripple({
         cName: 'md-button',
-        r: 10,
         color: 'red',
         time: '0.5s',
         MaxNum: 5
     })
 ```
 # Demo
-[demo](https://github.com/Ge-Ge/button/blob/master/demo.html) 
+## [demo](https://github.com/Ge-Ge/button/blob/master/demo.html) 
+## [jsFiddle](https://jsfiddle.net/LUPIN34/4ym52yvu/)
