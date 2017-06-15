@@ -4,6 +4,7 @@
 <head>
     <title>水波纹按钮</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 </head>
 <link href="./ripple.css" rel="stylesheet">
 <style>
@@ -53,6 +54,8 @@
     <div class="md-div demo-div"></div>
     <button class="md-button">文字</button>
     <div class="md-yuan yuan"></div>
+    <div class="yuan test"></div>
+    <div class="yuan test"></div>
 </body>
 
 <script src="./ripple.js"></script>
@@ -60,9 +63,9 @@
     new Ripple({
         cName: 'md-div',
         /* r: 20,*/
-        time: '2s',
+        time: '1s',
         color: 'rgba(0,0,0,0.1)',
-        MaxNum: 3
+        MaxNum: 8
     })
     new Ripple({
         cName: 'md-button',

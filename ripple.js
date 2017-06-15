@@ -25,12 +25,11 @@ var ripple_utill = {
          */
         removeAllChild: function(ele, noRM) {
             let childrenList = ele.children;
-            for (let i = 0; i < childrenList.length; i++) {
-                if (noRM != null && noRM === i) {
-                    continue;
-                }
-                ele.removeChild(childrenList[i])
+            for (let i = childrenList.length - 1; i >= 0; i--) {
+                if (noRM === i) { continue }
+                ele.removeChild(childrenList[i]);
             }
+
         },
         browserSupportEvent: function(eventName) {
             return eventName in window;
@@ -81,8 +80,11 @@ function Circular() {
 class Ripple {
     constructor(obj) {
         this.CIRCULAR = new Circular();
+        this.mouseFLAG = false; //是否可以移除
+        this.animateFLAG = false; //是否可以移除, 只有集齐两个flag才能移除
         this.buttonList = null;
         this.init(obj);
+        this.documentAddListener()
         this.buttonAddClickEvent();
     }
     init(obj) {
@@ -108,12 +110,26 @@ class Ripple {
             this.buttonList[i].style.position = 'relative'
             let wrapper = this.createRippleWrapper(this.CIRCULAR)
             this.buttonList[i].appendChild(wrapper)
+                //添加点击监听，创建span
             this.buttonList[i].addEventListener('click', (event) => {
-                this.reppleClick(event, this.buttonList[i], this.CIRCULAR, this.createRippleChildNode(wrapper));
+                    this.mouseFLAG = false;
+                    this.animateFLAG = false;
+                    this.reppleClick(event, this.buttonList[i], this.CIRCULAR, this.createRippleChildNode(wrapper));
+                })
+                //添加鼠标移出 监听。设置span为可移除状态
+            this.buttonList[i].addEventListener('mouseleave', (event) => {
+                this.mouseFLAG = true;
+                this.removeRipple(wrapper)
             })
 
         }
     };
+    documentAddListener() {
+        document.addEventListener('touchstart', (touch) => {
+            let flag = ripple_utill.hasClass(touch.target, this.CIRCULAR.cName);
+            console.log(flag)
+        })
+    }
     createRippleWrapper(circular) {
         //在button下创建一个div作为wrapper，默认有一个span.
         let div = document.createElement('div')
@@ -123,8 +139,9 @@ class Ripple {
         ripple_utill.addClass(div, this.CIRCULAR.wrapperCName)
         let span = circular.createRipple('span')
         span.addEventListener('animationend', (event) => {
+            this.animateFLAG = true;
             ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
-            ripple_utill.removeAllChild(div, 0);
+                //ripple_utill.removeAllChild(div, 0);
         })
         div.appendChild(span);
         return div;
@@ -140,13 +157,11 @@ class Ripple {
             } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum > childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
                 let span = this.CIRCULAR.createRipple('span');
                 span.addEventListener('animationend', (event) => {
+                    this.animateFLAG = true;
                     //新建的span在动画结束后，如果全部span空闲，则自身从wrapper中移除
                     ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
                         //wrapper.removeChild(span)
-                    let count = this.freeElementCount(wrapper);
-                    if (count === childrenList.length) {
-                        ripple_utill.removeAllChild(wrapper, 0);
-                    }
+                    this.removeRipple(wrapper)
                     console.log(event)
                 })
                 wrapper.appendChild(span);
@@ -223,5 +238,20 @@ class Ripple {
             return Math.ceil(MaxR / 5 / 2)
         }
         return Math.ceil(MaxR / 5);
+    };
+    /**
+     * 移除span：
+     * pc端：当鼠标移出button并且动画停止时，移除创建的span。
+     * 移动端：点击button以外的地方并且动画停止时，移除span。
+     */
+    removeRipple(wrapper) {
+        //如果可以移除span
+        if (this.mouseFLAG && this.animateFLAG) {
+            let count = this.freeElementCount(wrapper);
+            if (count === wrapper.children.length) {
+                ripple_utill.removeAllChild(wrapper, 0);
+            }
+        }
     }
+
 }

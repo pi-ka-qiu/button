@@ -2,11 +2,11 @@
     0% {
         opacity: 1;
     }
-    /*99% {
+    99% {
         opacity: 1;
-    }*/
+    }
     100% {
-        opacity: 1;
+        opacity: 0;
         transform: scale(5);
     }
 }
