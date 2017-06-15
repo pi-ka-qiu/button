@@ -192,13 +192,14 @@ class Ripple {
     reppleClick(event, button, circular, ripple) {
         this.computedCircleCenter(event, button);
         //当span与原来的位置相同时，不改变位置
-        if (circular.x + 'px' != ripple.style.left && ripple.style.top != circular.y + 'px') {
+        if (circular.x + 'px' === ripple.style.left && ripple.style.top === circular.y + 'px') {
+            console.log('点击位置相同');
+        } else {
             ripple.style.left = circular.x + 'px';
             ripple.style.top = circular.y + 'px';
-        } else {
-            console.log('点击位置相同')
+
         }
-        ripple_utill.addClass(ripple, this.CIRCULAR.animationCName)
+        ripple_utill.addClass(ripple, this.CIRCULAR.animationCName);
     };
     /**
      * 计算并设置圆心的位置
