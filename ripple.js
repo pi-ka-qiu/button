@@ -84,7 +84,7 @@ class Ripple {
         this.animateFLAG = false; //是否可以移除, 只有集齐两个flag才能移除
         this.buttonList = null;
         this.init(obj);
-        this.documentAddListener()
+        /*this.documentAddListener()*/
         this.buttonAddClickEvent();
     }
     init(obj) {
@@ -140,8 +140,7 @@ class Ripple {
         let span = circular.createRipple('span')
         span.addEventListener('animationend', (event) => {
             this.animateFLAG = true;
-            ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
-                //ripple_utill.removeAllChild(div, 0);
+            ripple_utill.removeClass(span, this.CIRCULAR.animationCName);
         })
         div.appendChild(span);
         return div;
@@ -158,11 +157,9 @@ class Ripple {
                 let span = this.CIRCULAR.createRipple('span');
                 span.addEventListener('animationend', (event) => {
                     this.animateFLAG = true;
-                    //新建的span在动画结束后，如果全部span空闲，则自身从wrapper中移除
-                    ripple_utill.removeClass(span, this.CIRCULAR.animationCName)
-                        //wrapper.removeChild(span)
-                    this.removeRipple(wrapper)
-                    console.log(event)
+                    //新建的span在动画结束后，如果全部span空闲，并且鼠标移出。则新建的span从wrapper中移除
+                    ripple_utill.removeClass(span, this.CIRCULAR.animationCName);
+                    this.removeRipple(wrapper);
                 })
                 wrapper.appendChild(span);
                 return span;
