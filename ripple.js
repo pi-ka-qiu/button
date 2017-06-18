@@ -33,6 +33,22 @@ var ripple_utill = {
         },
         browserSupportEvent: function(eventName) {
             return eventName in window;
+        },
+        /**
+         * @param {Element} ele
+         */
+        aniEndName: function(ele) {
+            let eleStyle = ele.style;
+            let verdors = ['a', 'webkitA', 'MozA', 'OA', 'msA'];
+            let endEvents = ['animationend', 'webkitAnimationEnd', 'animationend', 'oAnimationEnd', 'MSAnimationEnd'];
+            let animation;
+            for (var i = 0, len = verdors.length; i < len; i++) {
+                animation = verdors[i] + 'nimation';
+                if (animation in eleStyle) {
+                    return endEvents[i];
+                }
+            }
+            return 'animationend';
         }
     }
     /**
@@ -86,6 +102,7 @@ class Ripple {
         this.init(obj);
         /*this.documentAddListener()*/
         this.buttonAddClickEvent();
+        this.animationend = ripple_utill.aniEndName(this.buttonList[0]); //animationend兼容问题
     }
     init(obj) {
 
@@ -138,7 +155,7 @@ class Ripple {
         }
         ripple_utill.addClass(div, this.CIRCULAR.wrapperCName)
         let span = circular.createRipple('span')
-        span.addEventListener('animationend', (event) => {
+        span.addEventListener(this.animationend, (event) => {
             this.animateFLAG = true;
             ripple_utill.removeClass(span, this.CIRCULAR.animationCName);
         })
@@ -155,7 +172,7 @@ class Ripple {
                 return childrenList[i];
             } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum > childrenList.length) { //最后一个span && 动画没有停止&& 没有超过最多个数
                 let span = this.CIRCULAR.createRipple('span');
-                span.addEventListener('animationend', (event) => {
+                span.addEventListener(this.animationend, (event) => {
                     this.animateFLAG = true;
                     //新建的span在动画结束后，如果全部span空闲，并且鼠标移出。则新建的span从wrapper中移除
                     ripple_utill.removeClass(span, this.CIRCULAR.animationCName);
