@@ -1,5 +1,6 @@
 # Overview
 使用JavaScript制作 水波纹 特效。使用了animation 所以需要至少ie10。
+master分支使用了es6语法，需浏览器支持es6. dev分支是es5语法。
 
 ## Import using script tag
 
@@ -25,6 +26,7 @@
 # Usage
 ```HTML
 <button class="md-button">文字</button>
+<!--button得position将被设置为relative-->
 ```
 ```JavaScript
 new Ripple({
