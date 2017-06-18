@@ -1,3 +1,17 @@
+@-webkit-keyframes ripple {
+    0% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(5);
+        transform: scale(5);
+    }
+}
+
 @keyframes ripple {
     0% {
         opacity: 1;
@@ -7,6 +21,7 @@
     }
     100% {
         opacity: 0;
+        -webkit-transform: scale(5);
         transform: scale(5);
     }
 }
@@ -15,7 +30,9 @@
 /*决定水波纹的动画*/
 
 .ripple-animate {
+    -webkit-animation: ripple 0.65s linear;
     animation: ripple 0.65s linear;
+    -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
     border-radius: 50%;
 }
