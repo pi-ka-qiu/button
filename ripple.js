@@ -49,6 +49,19 @@ var ripple_utill = {
                 }
             }
             return 'animationend';
+        },
+        animationSupport: function() {
+            let eleStyle = document.createElement('span').style;
+            let verdors = ['a', 'webkitA', 'MozA', 'OA', 'msA'];
+            let endEvents = ['animationend', 'webkitAnimationEnd', 'animationend', 'oAnimationEnd', 'MSAnimationEnd'];
+            let animation;
+            for (var i = 0, len = verdors.length; i < len; i++) {
+                animation = verdors[i] + 'nimation';
+                if (animation in eleStyle) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
     /**
@@ -95,22 +108,24 @@ function Circular() {
 
 class Ripple {
     constructor(obj) {
-        this.CIRCULAR = new Circular();
-        this.mouseFLAG = false; //是否可以移除
-        this.animateFLAG = false; //是否可以移除, 只有集齐两个flag才能移除
-        this.buttonList = null;
-        this.init(obj);
-        /*this.documentAddListener()*/
-        this.buttonAddClickEvent();
-        this.animationend = ripple_utill.aniEndName(this.buttonList[0]); //animationend兼容问题
+        if (ripple_utill.animationSupport()) {
+            this.CIRCULAR = new Circular();
+            this.mouseFLAG = false; //是否可以移除
+            this.animateFLAG = false; //是否可以移除, 只有集齐两个flag才能移除
+            this.buttonList = null;
+            this._init(obj);
+            /*this.documentAddListener()*/
+            this._buttonAddClickEvent();
+            this.animationend = ripple_utill.aniEndName(this.buttonList[0]); //animationend兼容问题
+        }
     }
-    init(obj) {
+    _init(obj) {
 
         if (!ripple_utill.isEmptyObject(obj)) {
 
             this.CIRCULAR.cName = obj.cName || this.CIRCULAR.cName
             this.CIRCULAR.center = obj.center || this.CIRCULAR.center
-            this.CIRCULAR.r = obj.r || this.computedR()
+            this.CIRCULAR.r = obj.r || this._computedR()
             this.CIRCULAR.color = obj.color || this.CIRCULAR.color
             this.CIRCULAR.time = obj.time || this.CIRCULAR.time
             this.CIRCULAR.MaxNum = obj.MaxNum || this.CIRCULAR.MaxNum
@@ -118,25 +133,25 @@ class Ripple {
         }
     };
     //为所有按钮添加监听，添加span
-    buttonAddClickEvent() {
+    _buttonAddClickEvent() {
         //创建button下的 span
         this.buttonList = document.getElementsByClassName(this.CIRCULAR.cName);
         for (let i = 0; i < this.buttonList.length; i++) {
             //let circular = new Circular()
             //将所有按钮设置为相对定位
             this.buttonList[i].style.position = 'relative'
-            let wrapper = this.createRippleWrapper(this.CIRCULAR)
+            let wrapper = this._createRippleWrapper(this.CIRCULAR)
             this.buttonList[i].appendChild(wrapper)
                 //添加点击监听，创建span
             this.buttonList[i].addEventListener('click', (event) => {
                     this.mouseFLAG = false;
                     this.animateFLAG = false;
-                    this.reppleClick(event, this.buttonList[i], this.CIRCULAR, this.createRippleChildNode(wrapper));
+                    this._reppleClick(event, this.buttonList[i], this.CIRCULAR, this._createRippleChildNode(wrapper));
                 })
                 //添加鼠标移出 监听。设置span为可移除状态
             this.buttonList[i].addEventListener('mouseleave', (event) => {
                 this.mouseFLAG = true;
-                this.removeRipple(wrapper)
+                this._removeRipple(wrapper)
             })
 
         }
@@ -147,7 +162,7 @@ class Ripple {
             console.log(flag)
         })
     }
-    createRippleWrapper(circular) {
+    _createRippleWrapper(circular) {
         //在button下创建一个div作为wrapper，默认有一个span.
         let div = document.createElement('div')
         if (circular.zIndex != null) {
@@ -162,7 +177,7 @@ class Ripple {
         div.appendChild(span);
         return div;
     };
-    createRippleChildNode(wrapper) {
+    _createRippleChildNode(wrapper) {
         //创建wrapper子节点span时，判断wrapper下是否有span空闲(动画停止)，空闲则重用，所有都没有则新建span。
         let childrenList = wrapper.children;
         for (let i = 0; i < childrenList.length; i++) {
@@ -176,7 +191,7 @@ class Ripple {
                     this.animateFLAG = true;
                     //新建的span在动画结束后，如果全部span空闲，并且鼠标移出。则新建的span从wrapper中移除
                     ripple_utill.removeClass(span, this.CIRCULAR.animationCName);
-                    this.removeRipple(wrapper);
+                    this._removeRipple(wrapper);
                 })
                 wrapper.appendChild(span);
                 return span;
@@ -188,7 +203,7 @@ class Ripple {
      * 
      * @param {Element} wrapper 
      */
-    freeElementCount(wrapper) {
+    _freeElementCount(wrapper) {
         let count = 0;
         let childrenList = wrapper.children;
         for (let i = 0; i < childrenList.length; i++) {
@@ -206,8 +221,8 @@ class Ripple {
      * @param {Circular} circular 
      * @param {Element} ripple 
      */
-    reppleClick(event, button, circular, ripple) {
-        this.computedCircleCenter(event, button);
+    _reppleClick(event, button, circular, ripple) {
+        this._computedCircleCenter(event, button);
         //当span与原来的位置相同时，不改变位置
         if (circular.x + 'px' === ripple.style.left && ripple.style.top === circular.y + 'px') {
             console.log('点击位置相同');
@@ -223,7 +238,7 @@ class Ripple {
      * @param {Event} event 
      * @param {Button} button 
      */
-    computedCircleCenter(event, button) {
+    _computedCircleCenter(event, button) {
         let positionX = 0
         let positionY = 0;
         if (this.CIRCULAR.center) {
@@ -246,7 +261,7 @@ class Ripple {
         this.CIRCULAR.setY(parseInt(positionY));
     };
     //计算半径
-    computedR() {
+    _computedR() {
         let button = document.getElementsByClassName(this.CIRCULAR.cName)[0];
         let MaxR = button.clientHeight > button.clientWidth ? button.clientHeight : button.clientWidth;
         if (this.CIRCULAR.center) {
@@ -259,14 +274,17 @@ class Ripple {
      * pc端：当鼠标移出button并且动画停止时，移除创建的span。
      * 移动端：点击button以外的地方并且动画停止时，移除span。
      */
-    removeRipple(wrapper) {
+    _removeRipple(wrapper) {
         //如果可以移除span
         if (this.mouseFLAG && this.animateFLAG) {
-            let count = this.freeElementCount(wrapper);
+            let count = this._freeElementCount(wrapper);
             if (count === wrapper.children.length) {
                 ripple_utill.removeAllChild(wrapper, 0);
             }
         }
+    };
+    refresh() {
+        this.CIRCULAR.r = this._computedR()
     }
 
 }
