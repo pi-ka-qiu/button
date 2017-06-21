@@ -24,7 +24,10 @@ master分支使用了es6语法，需浏览器支持es6. dev分支是es5语法。
 | zIndex | 设置z-index 默认为：null,当水波纹被覆盖时，可以使用此参数|
 
 method
-|refresh()|当页面大小变化时，需要手动调用这个方法。
+
+| Option | Description |
+| ----- | ----- |
+|refresh()|当页面大小变化时，需要手动调用这个方法。|
 
 # Usage
 ```HTML
