@@ -285,6 +285,11 @@ class Ripple {
     };
     refresh() {
         this.CIRCULAR.r = this._computedR()
+        let spanList = document.getElementsByClassName('md-ripple');
+        for (let i = 0; i < spanList.length; i++) {
+            spanList[i].style.width = 2 * this.CIRCULAR.r + 'px';
+            spanList[i].style.height = 2 * this.CIRCULAR.r + 'px';
+        }
     }
 
 }

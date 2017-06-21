@@ -60,7 +60,7 @@
 
 <script src="./ripple.js"></script>
 <script>
-    new Ripple({
+    let ripple1 = new Ripple({
         cName: 'md-div',
         /* r: 20,*/
         time: '0.65s',
@@ -81,6 +81,11 @@
         MaxNum: 3,
         center: true,
         zIndex: 2
+    })
+
+    window.addEventListener('resize', function(event) {
+        ripple1.refresh();
+        console.log('resize')
     })
 </script>
 
