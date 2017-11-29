@@ -251,8 +251,8 @@ class Ripple {
             /**点击的坐标相对与按钮的位置 = 点击的位置 - 获取按钮的位置 
              * x = 按钮x轴位置 - R
              */
-            let relativeX = event.clientX - button.offsetLeft;
-            let relativeY = event.clientY - button.offsetTop;
+            let relativeX = event.pageX - button.offsetLeft;
+            let relativeY = event.pageY - button.offsetTop;
             positionX = relativeX - this.CIRCULAR.r;
             positionY = relativeY - this.CIRCULAR.r;
         }
