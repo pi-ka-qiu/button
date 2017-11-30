@@ -1,14 +1,33 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) { return typeof obj; } : function(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+} : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
 
-var _createClass = function() {
-    function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i];
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
             descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor); } } return function(Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
+    return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) defineProperties(Constructor, staticProps);
+        return Constructor;
+    };
+}();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
 
 var ripple_utill = {
     isEmptyObject: function isEmptyObject(obj) {
@@ -68,28 +87,28 @@ var ripple_utill = {
         return 'animationend';
     },
     animationSupport: function animationSupport() {
-            var eleStyle = document.createElement('span').style;
-            var verdors = ['a', 'webkitA', 'MozA', 'OA', 'msA'];
-            var endEvents = ['animationend', 'webkitAnimationEnd', 'animationend', 'oAnimationEnd', 'MSAnimationEnd'];
-            var animation = void 0;
-            for (var i = 0, len = verdors.length; i < len; i++) {
-                animation = verdors[i] + 'nimation';
-                if (animation in eleStyle) {
-                    return true;
-                }
+        var eleStyle = document.createElement('span').style;
+        var verdors = ['a', 'webkitA', 'MozA', 'OA', 'msA'];
+        var endEvents = ['animationend', 'webkitAnimationEnd', 'animationend', 'oAnimationEnd', 'MSAnimationEnd'];
+        var animation = void 0;
+        for (var i = 0, len = verdors.length; i < len; i++) {
+            animation = verdors[i] + 'nimation';
+            if (animation in eleStyle) {
+                return true;
             }
-            return false;
         }
-        /**
-         * 接收参数
-         * cName: 'md-button' 
-         * color： ‘#fff’
-         * r： 12 r默认是自动计算，有传入时使用自定义值;
-         * time： 1000 
-         * rippleMultiple: true  是否出现多个水波纹
-         * MaxNum：3 最多出现多少个水波纹
-         * center: true 水波纹出现的位置
-         */
+        return false;
+    }
+    /**
+     * 接收参数
+     * cName: 'md-button' 
+     * color： ‘#fff’
+     * r： 12 r默认是自动计算，有传入时使用自定义值;
+     * time： 1000 
+     * rippleMultiple: true  是否出现多个水波纹
+     * MaxNum：3 最多出现多少个水波纹
+     * center: true 水波纹出现的位置
+     */
 };
 Circular.prototype = {
     r: 20,
@@ -106,13 +125,13 @@ Circular.prototype = {
 function Circular() {
     this.x = 0;
     this.y = 0;
-    this.setX = function(newValue) {
+    this.setX = function (newValue) {
         this.x = newValue;
     };
-    this.setY = function(newValue) {
+    this.setY = function (newValue) {
         this.y = newValue;
     };
-    this.createRipple = function() {
+    this.createRipple = function () {
         var tagName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'span';
 
         var span = document.createElement(tagName);
@@ -125,7 +144,7 @@ function Circular() {
     };
 }
 
-var Ripple = function() {
+var Ripple = function () {
     function Ripple(obj) {
         _classCallCheck(this, Ripple);
 
@@ -171,17 +190,15 @@ var Ripple = function() {
                 //将所有按钮设置为相对定位
                 _this.buttonList[i].style.position = 'relative';
                 var wrapper = _this._createRippleWrapper(_this.CIRCULAR);
-                _this.buttonList[i].appendChild(wrapper
-                    //添加点击监听，创建span
-                );
-                _this.buttonList[i].addEventListener('click', function(event) {
-                        _this.mouseFLAG = false;
-                        _this.animateFLAG = false;
-                        _this._reppleClick(event, _this.buttonList[i], _this.CIRCULAR, _this._createRippleChildNode(wrapper));
-                    }
-                    //添加鼠标移出 监听。设置span为可移除状态
-                );
-                _this.buttonList[i].addEventListener('mouseleave', function(event) {
+                _this.buttonList[i].appendChild(wrapper);
+                //添加点击监听，创建span
+                _this.buttonList[i].addEventListener('click', function (event) {
+                    _this.mouseFLAG = false;
+                    _this.animateFLAG = false;
+                    _this._reppleClick(event, _this.buttonList[i], _this.CIRCULAR, _this._createRippleChildNode(wrapper));
+                });
+                //添加鼠标移出 监听。设置span为可移除状态
+                _this.buttonList[i].addEventListener('mouseleave', function (event) {
                     _this.mouseFLAG = true;
                     _this._removeRipple(wrapper);
                 });
@@ -196,7 +213,7 @@ var Ripple = function() {
         value: function documentAddListener() {
             var _this2 = this;
 
-            document.addEventListener('touchstart', function(touch) {
+            document.addEventListener('touchstart', function (touch) {
                 var flag = ripple_utill.hasClass(touch.target, _this2.CIRCULAR.cName);
                 console.log(flag);
             });
@@ -213,7 +230,7 @@ var Ripple = function() {
             }
             ripple_utill.addClass(div, this.CIRCULAR.wrapperCName);
             var span = circular.createRipple('span');
-            span.addEventListener(this.animationend, function(event) {
+            span.addEventListener(this.animationend, function (event) {
                 _this3.animateFLAG = true;
                 ripple_utill.removeClass(span, _this3.CIRCULAR.animationCName);
             });
@@ -234,10 +251,10 @@ var Ripple = function() {
                     ripple_utill.addClass(childrenList[i], 'md-ripple');
                     return childrenList[i];
                 } else if (flag != null && i === childrenList.length - 1 && this.CIRCULAR.MaxNum > childrenList.length) {
-                    var _ret2 = function() {
+                    var _ret2 = function () {
                         //最后一个span && 动画没有停止&& 没有超过最多个数
                         var span = _this4.CIRCULAR.createRipple('span');
-                        span.addEventListener(_this4.animationend, function(event) {
+                        span.addEventListener(_this4.animationend, function (event) {
                             _this4.animateFLAG = true;
                             //新建的span在动画结束后，如果全部span空闲，并且鼠标移出。则新建的span从wrapper中移除
                             ripple_utill.removeClass(span, _this4.CIRCULAR.animationCName);
@@ -315,8 +332,8 @@ var Ripple = function() {
                 /**点击的坐标相对与按钮的位置 = 点击的位置 - 获取按钮的位置 
                  * x = 按钮x轴位置 - R
                  */
-                var _relativeX = event.clientX - button.offsetLeft;
-                var _relativeY = event.clientY - button.offsetTop;
+                var _relativeX = event.pageX - button.offsetLeft;
+                var _relativeY = event.pageY - button.offsetTop;
                 positionX = _relativeX - this.CIRCULAR.r;
                 positionY = _relativeY - this.CIRCULAR.r;
             }
